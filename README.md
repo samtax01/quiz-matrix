@@ -8,7 +8,7 @@ Laravel is a web application framework with expressive, elegant syntax. We belie
 
 ## API Documentation
 
-This api consist of only one endpoint ```[POST] '/api/matrix'```.  
+This API consists of only one endpoint ```[POST] '/api/matrix'```.  
 Below is the parameter requirements and expected return values
 
 Endpoint
