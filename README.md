@@ -13,7 +13,7 @@ Below is the parameter requirements and expected return values
 
 Endpoint
 ```
-[POST] 'https://quiz-matrix.herokuapp.com/api/matrix'
+[POST] 'http://quiz-matrix.herokuapp.com/public/api/matrix'
 ```
 
 Request Payload
