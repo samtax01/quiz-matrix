@@ -12,6 +12,7 @@ class MatrixService
 
     /**
      * Matrix multiplication
+     * You can confirm calculation online from: https://matrix.reshish.com/multiplication.php
      *
      * @param array $first
      * @param array $second
@@ -19,59 +20,22 @@ class MatrixService
      * @return array
      * @throws ApiResponseException
      */
-    public function getMatrixProduct(array $first, array $second, bool $responseAsAlphabet = false): array
+    public function getMatrixProduct(array $first, array $second, bool $responseAsAlphabet = false)
     {
-        $final = [];
-        $total = count($second[0]);
-
-        foreach($first as $key => $currentRow){
-            for($i=0; $i < $total; $i++) {
-                $currentColumn = $this->arrayShiftKey($second, $i);
-                $cellSum = $this->sumTheProductOf($currentRow,$currentColumn);
-
-                $final[$key][] = ($responseAsAlphabet)
-                    ? $this->parseToColumnName($cellSum)
-                    : $cellSum;
+        $result = [];
+        for($i=0; $i<count($first); $i++){
+            for($j=0; $j<count($second[0]); $j++){
+                $sum = 0;
+                for($k=0; $k<count($first[0]); $k++){
+                    $sum += $first[$i][$k] * $second[$k][$j];
+                }
+                $result[$i][$j] = $responseAsAlphabet? $this->parseToColumnName($sum): $sum;
             }
         }
-        return $final;
+        return $result;
     }
 
 
-    /**
-     * Returns an array of keys for
-     * an array of arrays.
-     *
-     * @param array $arr   The array of arrays.
-     * @param int   $index The index to use for
-     *                     each array.
-     *
-     * @return array
-     */
-    private function arrayShiftKey(array $arr, int $index): array
-    {
-        $buffer = [];
-        foreach($arr as $array)
-            $buffer[] = $array[$index];
-        return $buffer;
-    }
-
-    /**
-     * Sums the product of two
-     * equally-length arrays.
-     *
-     * @param  array $first
-     * @param  array $second
-     *
-     * @return int
-     */
-    private function sumTheProductOf(array $first, array $second): int
-    {
-        $total = 0;
-        for($i=0; $i<count($first); $i++)
-            $total += $first[$i] *  $second[$i];
-        return $total;
-    }
 
     /**
      * Retrieves the alpha representation for
@@ -84,13 +48,16 @@ class MatrixService
      */
     public function parseToColumnName(int $columnNumber): string
     {
-        $columnNumber--;
-        if($columnNumber >= 0 && $columnNumber < 26){
-            return chr((ord('A') + $columnNumber));
-        }else if ($columnNumber > 25){
-            return $this->parseToColumnName( $columnNumber / 26) . $this->parseToColumnName( $columnNumber % 26 + 1);
-        }else
-            throw new ApiResponseException("InvalidColumn #".($columnNumber + 1));
+        $columnNumber = intval($columnNumber);
+        if ($columnNumber <= 0) return '';
+
+        $letter = '';
+        while($columnNumber != 0){
+            $p = ($columnNumber - 1) % 26;
+            $columnNumber = intval(($columnNumber - $p) / 26);
+            $letter = chr(65 + $p) . $letter;
+        }
+        return $letter;
     }
 
 
