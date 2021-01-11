@@ -18,9 +18,8 @@ class MatrixService
      * @param array $second
      * @param bool $responseAsAlphabet
      * @return array
-     * @throws ApiResponseException
      */
-    public function getMatrixProduct(array $first, array $second, bool $responseAsAlphabet = false)
+    public function getMatrixProduct(array $first, array $second, bool $responseAsAlphabet = false): array
     {
         $result = [];
         for($i=0; $i<count($first); $i++){
@@ -37,6 +36,8 @@ class MatrixService
 
 
 
+
+
     /**
      * Retrieves the alpha representation for
      * the parameter.
@@ -44,7 +45,6 @@ class MatrixService
      * @param int $columnNumber
      *
      * @return string
-     * @throws ApiResponseException
      */
     public function parseToColumnName(int $columnNumber): string
     {
